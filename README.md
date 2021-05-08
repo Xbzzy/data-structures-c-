@@ -1,4 +1,4 @@
-# important(data structure\arithmetic)
+# important(data structure\arithmetic)(c语言实现)
 包含对于
 快速排序及跳表
 AVL tree基本操作函数接口
