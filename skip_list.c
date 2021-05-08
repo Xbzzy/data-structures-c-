@@ -1,3 +1,5 @@
+//对于跳表的一些基本实现，包括数据结构，创建、插入、删除结点以及对值的查询。
+//测试案例中设定最高层数为5，main函数中有具体数据用于测试
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
