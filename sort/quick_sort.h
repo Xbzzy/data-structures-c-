@@ -1,130 +1,55 @@
 
-//对于跳表的一些基本实现，包括数据结构，创建、插入、删除结点以及对值的查询。
-//测试案例中设定最高层数为5，main函数中有具体数据用于测试
+//普通快排，选取子序列中固定位（第一位）作为基准进行排序；
+//对于渐进有序的序列排序效果较差，会造成子序列两边的不平衡从而导致时间复杂度趋近于（O(n²)）；
+//测试用例由用户输入；
 #include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#define max_level 5
-typedef struct node
+int put(int data[], int left, int right)//将数据整理为在子序列中基本有序；
 {
-	int key;
-	int value;
-	struct node *next[1];
-}Node;
-typedef struct list
-{
-	int level;
-	Node *head;
-}skip_list;
-Node* create_node(int level, int key, int value)
-{
-	Node *temp = (Node*)malloc(sizeof(Node)*level);
-	temp->key = key;
-	temp->value = value;
-	return temp;
+	int i = left, j = right;
+	int norm = data[i];
+	while (i<j)
+	{
+		while (i<j&&data[j] >= norm) j--;
+		data[i] = data[j];
+		while (i<j&&data[i] <= norm) i++;
+		data[j] = data[i];
+	}
+	data[i] = norm;
+	return i;
 }
-skip_list* create_list()
+void sort(int data[], int left, int right)//递归整理左右子序列直到排序完成
 {
-	skip_list* list = (skip_list*)malloc(sizeof(skip_list));
-	list->level = 0;
-	Node* one = create_node(max_level, 0, 0);
-	list->head = one;
-	for (int i = 0; i < max_level; i++)
-		one->next[i] = NULL;
+	if (left<right)
+	{
+		int i = put(data, left, right);
+		sort(data, left, i - 1);
+		sort(data, i + 1,right );
+	}
 }
-int rand_level()
+int *input(int len)//输入数据函数
 {
-	int level = 1;
-	while (rand() % 2)
-		level++;
-	level = (max_level>level) ? level : max_level;
-	return level;
+	int*data = (int*)malloc(len*(sizeof(int)));
+	for (int i = 0; i < len; i++)
+	{
+		printf("第%d个元素：", i + 1);
+		scanf("%d", &data[i]);
+	}
+	return data;
 }
-int insert_node(skip_list* list, int key, int value)
+int main()
 {
-	Node* way_data[max_level];
-	Node* pre = list->head, *last = NULL;
-	for (int i = list->level - 1; i >= 0; i--)
-	{
-		while ((last = pre->next[i]) && last->key < key)
-			pre = last;
-		way_data[i] = pre;
-	}
-	if (last&&last->key == key)
-	{
-		last->value = value;
-		return 1;
-	}
-	int level = rand_level();
-	if (level > list->level)
-	{
-		for (int i = list->level; i < level; i++)
-		{
-			way_data[i] = list->head;
-		}
-		list->level = level;
-	}
-	last = create_node(level, key, value);
-	for (int i = level-1; i >= 0; i--)
-	{
-		last->next[i] = way_data[i]->next[i];
-		way_data[i]->next[i] = last;
-	}
-	return 1;
-}
-int del_node(skip_list *list, int key)
-{
-	Node *way_data[max_level];
-	Node* pre = list->head, *last = NULL;
-	for (int i = list->level - 1; i >= 0; i--)
-	{
-		while ((last = pre->next[i]) && last->key < key)
-			pre = last;
-		way_data[i] = pre;
-	}
-	if (!last || (last&&last->key != key))
-	{
-		printf("sry,fail to search\n");
-		return -1;
-	}
-	for (int i = list->level - 1; i >= 0; i--)
-	{
-		if (way_data[i]->next[i] = last)
-		{
-			way_data[i]->next[i] = last->next[i];
-			if (list->head->next[i] == NULL)
-				list->level--;
-		}
-	}
-	printf("delete success\n");
-	free(last);
-	last = NULL;
-	return 1;
-}
-int search_key(skip_list* list, int key)
-{
-	Node* pre = list->head, *last = NULL;
-	for (int i = list->level - 1; i >= 0; i--)
-	{
-		while ((last = pre->next[i]) && last->key < key)
-			pre = last;
-		if (last&&last->key == key)
-			return last->value;
-	}
-	return -1;
-}
-void main()
-{
-	srand(time(0));
-	int key_nums[5] = { 13, 26, 9, 41, 33 };
-	skip_list* list = create_list();
-	for (int i = 0; i < 5; i++)
-		insert_node(list, key_nums[i], 0);
-	int i=search_key(list, 13);
-	if (i != -1)printf("search success\n");
-	else printf("fail to search\n");
-	del_node(list, 13);
-	int i = search_key(list, 13);
-	if (i != -1)printf("search success\n");
-	else printf("fail to search\n");
+	int len;
+	printf("输入数组长度：\n");
+	scanf("%d", &len);
+	int*data = input(len);
+	printf("排序前:\n");
+	for (int i = 0; i<len; ++i)
+		printf(" %d ", data[i]);
+	sort(data, 0, len-1);
+	printf("\n排序后:\n");
+	for (int i = 0; i<len; ++i)
+		printf(" %d ", data[i]);
+	printf("\n");
+	system("pause");
+	return 0;
 }
