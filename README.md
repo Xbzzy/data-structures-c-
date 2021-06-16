@@ -1,4 +1,4 @@
-# important(data structure\arithmetic)
+# important(data structures\algorithms)
 such as
 quick sort/skip list
 avl tree
