@@ -7,6 +7,7 @@ typedef Ptr_Node Position;
 
 List CreateEmptyList(List L);
 Position Find(int value, List L);
+Position FindPre(int value, List L);
 int Delete(int value, List L);
 void Insert(int value, List L, Position P);
 void DeleteList(List L);
@@ -27,17 +28,23 @@ List CreateEmptyList()
 }
 Position Find(int value, List L)
 {
-	Positon P = L;
+	Position P = L;
 	while (P->Next != NULL&&P->val != value)
+		P = P->Next;
+	return P;
+}
+Position FindPre(int value, List L)
+{
+	Position P = L;
+	while (P->Next != NULL&&P->Next->val != value)
 		P = P->Next;
 	return P;
 }
 /*successfully delete return 1,not found return -1*/
 int Delete(int value, List L)
 {
-	Positon P = L, Tmp;
-	while (P->Next != NULL&&P->Next->val != value)
-		P = P->Next;
+	Position Tmp;
+	Position P = FindPre(value, L);
 	if (P->Next != NULL)
 	{
 		Tmp = P->Next;
@@ -50,7 +57,7 @@ int Delete(int value, List L)
 /*insert after position p*/
 void Insert(int value, List L, Position P)
 {
-	Positon Tmp=malloc(struct Node);
+	Position Tmp=malloc(sizeof(struct Node));
 	if (Tmp == NULL) printf("out of space!\n");
 	Tmp->val = value;
 	Tmp->Next = P->Next;
