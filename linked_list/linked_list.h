@@ -23,6 +23,7 @@ struct Node
 List CreateEmptyList()
 {
 	List L = malloc(sizeof(struct Node));
+	if(L==NULL){printf("out of space!\n");return;}
 	L->Next = NULL;
 	return L;
 }
@@ -58,7 +59,7 @@ int Delete(int value, List L)
 void Insert(int value, List L, Position P)
 {
 	Position Tmp=malloc(sizeof(struct Node));
-	if (Tmp == NULL) printf("out of space!\n");
+	if (Tmp == NULL) {printf("out of space!\n");return;}
 	Tmp->val = value;
 	Tmp->Next = P->Next;
 	P->Next = Tmp;
