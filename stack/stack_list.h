@@ -26,7 +26,7 @@ int IsEmpty(Stack S)
 Stack CreateStack()
 {
 	Stack S = malloc(sizeof(struct Node));
-	if (S == NULL) printf("out of space!\n");
+	if (S == NULL) {printf("out of space!\n");return;}
 	S->Next = NULL;
 	return S;
 }
@@ -43,7 +43,7 @@ void Push(int value, Stack S)
 {
 	PtrToNode TmpNode;
 	TmpNode = malloc(sizeof(struct Node));
-	if (TmpNode == NULL)printf("out of space!\n");
+	if (TmpNode == NULL){printf("out of space!\n");return;}
 	else
 	{
 		TmpNode->val = value;
