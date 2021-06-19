@@ -1,4 +1,4 @@
-#ifndef _STACK_LIST_
+#ifndef _STACK_LIST_H_
 
 struct Node;
 typedef struct Node *PtrToNode;
@@ -11,7 +11,7 @@ void Push(int value, Stack S);
 void Pop(Stack S);
 int Top(Stack S);
 
-#endif /*_STACK_LIST_*/
+#endif /*_STACK_LIST_H_*/
 
 struct Node
 {
