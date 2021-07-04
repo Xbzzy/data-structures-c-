@@ -61,4 +61,6 @@ void main()
 	Test_Insert(hashmap);
 	Test_Find(hashmap);
 	Test_func_time(hashmap);
+	system("pusue");
+	return;
 }
