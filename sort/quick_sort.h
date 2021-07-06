@@ -1,9 +1,23 @@
+#ifndef _QUICK_SORT_H_
 
-//普通快排，选取子序列中固定位（第一位）作为基准进行排序；
-//对于渐进有序的序列排序效果较差，会造成子序列两边的不平衡从而导致时间复杂度趋近于（O(n²)）；
-//测试用例由用户输入；
-#include<stdio.h>
-int put(int data[], int left, int right)//将数据整理为在子序列中基本有序；
+int *InitArray(int maxsize);
+void QuickSort(int *data, int left, int right);
+
+#endif /*_QUICK_SORT_H_*/
+int *InitArray(int maxsize)
+{
+	int i;
+	int *data = (int *)malloc(sizeof(int)*maxsize);
+	if (data == NULL){
+		printf("out of space!\n");
+		return NULL;
+	}
+	for (i = 0; i < maxsize; i++){
+		data[i] = rand() % (maxsize * 5);
+	}
+	return data;
+}
+static int Settle(int data[], int left, int right)
 {
 	int i = left, j = right;
 	int norm = data[i];
@@ -17,39 +31,13 @@ int put(int data[], int left, int right)//将数据整理为在子序列中基�
 	data[i] = norm;
 	return i;
 }
-void sort(int data[], int left, int right)//递归整理左右子序列直到排序完成
+void QuickSort(int data[], int left, int right)
 {
 	if (left<right)
 	{
-		int i = put(data, left, right);
-		sort(data, left, i - 1);
-		sort(data, i + 1,right );
+		int i = Settle(data, left, right);
+		QuickSort(data, left, i - 1);
+		QuickSort(data, i + 1, right);
 	}
 }
-int *input(int len)//输入数据函数
-{
-	int*data = (int*)malloc(len*(sizeof(int)));
-	for (int i = 0; i < len; i++)
-	{
-		printf("第%d个元素：", i + 1);
-		scanf("%d", &data[i]);
-	}
-	return data;
-}
-int main()
-{
-	int len;
-	printf("输入数组长度：\n");
-	scanf("%d", &len);
-	int*data = input(len);
-	printf("排序前:\n");
-	for (int i = 0; i<len; ++i)
-		printf(" %d ", data[i]);
-	sort(data, 0, len-1);
-	printf("\n排序后:\n");
-	for (int i = 0; i<len; ++i)
-		printf(" %d ", data[i]);
-	printf("\n");
-	system("pause");
-	return 0;
-}
+
